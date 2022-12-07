@@ -20,9 +20,6 @@ class Connection{
         }
 
     }
-    public function get_connectino(){
-        return $this->connection;
-    }
 
 }
 
