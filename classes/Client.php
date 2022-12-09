@@ -8,8 +8,9 @@ class Client
     private $nationality;
     private $email;
     private $password_Client;
-
-    public function __construct($nom,$prenom,$email,$password)
+    private $url_validation;
+    private $validation;
+    public function __construct($nom,$prenom,$email,$password,$url_validation,)
     {
         $this->url_address_client = $this->get_random_string_max(99);
         $this->nom = $nom;
@@ -17,6 +18,8 @@ class Client
         $this->nationality =  $this->get_nationality(); ;
         $this->email = $email;
         $this->password_Client = $password;
+        $this->url_validation = $url_validation;
+        $this->validation = 0;
     }
 
     private function get_random_string_max($length){
@@ -50,22 +53,42 @@ class Client
     }
 
     public function add_client(){
-
+        $existing = 1;
         try{
             $con = new Connection();
             $connection = $con->connection;
-            $req = "INSERT INTO Client (url_address_client , nom , prenom , nation , email , password) values(?,?,?,?,?,?)";
+            $req = "SELECT  email from Client where email = :e";
             $statement = $connection->prepare($req);
-            
-            //$statement = $this->conn->prepare($sql);
-            
-            $statement->execute([$this->url_address_client , $this->nom , $this->prenom , $this->nationality , $this->email ,$this->password_Client]);
-        }catch(Exception $e){
+            $statement->execute([ ':e'=>$this->email]);
+            $user = $statement->fetchAll(PDO::FETCH_OBJ);
+
+            if(!empty($user)){
+                return 0;
+            }else{
+
+                try{
+                    $con = new Connection();
+                    $connection = $con->connection;
+                    $req = "INSERT INTO Client (url_address_client , nom , prenom , nation , email , password,validation,url_validation) values(?,?,?,?,?,?,?,?)";
+                    $statement = $connection->prepare($req);
+                    
+                    //$statement = $this->conn->prepare($sql);
+                    
+                    $statement->execute([$this->url_address_client , $this->nom , $this->prenom , $this->nationality , $this->email ,$this->password_Client,$this->validation,$this->url_validation]);
+                    return 1;
+                }catch(Exception $e){
+                    print_r($e->getMessage());
+                }
+            }
+        }catch(PDOException $e){
             print_r($e->getMessage());
         }
-            
+        
+        
+                
+        
     }
 }
-$obj = new Client("bouabdelloui" , "mohammed" , "mohammed@gmail.com","azertty");
-$obj->add_client();
+//$obj = new Client("bouabdelloui" , "mohammed" , "simo2@gmail.com","azertty","kuheds");
+//$obj->add_client();
 ?>
