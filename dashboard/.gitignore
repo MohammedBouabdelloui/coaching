@@ -2,10 +2,10 @@ Thumbs.db
 .DS_Store
 .dist
 .tmp
+.html
 .sass-cache
 npm-debug.log
 node_modules
 package-lock.json
 yarn.lock
 netlify
-template/*.html

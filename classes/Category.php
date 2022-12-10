@@ -12,7 +12,7 @@ $nim = "0855555555";
 $nom = "Mohammed";
 trim($nom);
 htmlspecialchars($email);
-if(preg_match('/^([a-zA-Z]+$)/',$nom)){
+if(preg_match('/^([a-zA-Z]+)/',$nom)){
 
     print 'chen valede<br>';
 }else{
@@ -24,3 +24,6 @@ echo 'forma de emaile invalede';
 if(!preg_match('/^0([67])([0-9]{8})/',$nim)){
     echo 'numero invaled';
 }
+
+echo hash("sha1",$nom)."<br>";
+echo password_hash($nom, PASSWORD_DEFAULT);

@@ -90,5 +90,5 @@ class Client
     }
 }
 //$obj = new Client("bouabdelloui" , "mohammed" , "simo2@gmail.com","azertty","kuheds");
-//$obj->add_client();
+//echo $obj->add_client();
 ?>
