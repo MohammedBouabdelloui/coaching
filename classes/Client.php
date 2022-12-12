@@ -48,7 +48,7 @@ class Client
           }
         // create curl resource
         $ch =  (unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=105.157.12.77')));
-        
+    
         return $ch['geoplugin_countryName'];     
     }
 
