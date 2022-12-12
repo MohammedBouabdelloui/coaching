@@ -2,7 +2,7 @@
 
 
 class Connection{
-    
+
     static $host = "mysql:localhost=host;dbname=scstr;port=3306";
     static $user = "root";
     static $password = "DD2022";

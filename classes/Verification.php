@@ -28,6 +28,16 @@ class Verification extends Connection{
         }
 
     }
+    public function Re_transmitter_url_validation($email , $url_validation){
+        try{
+            $req = 'UPDATE Client SET url_validation = :urlV where email =:e ';
+            $statement = $this->connection->prepare($req);
+            $statement->execute([":urlV"=>$url_validation , ':e'=>$email]);
+            return 1;
+        }catch(PDOException $e){
+            print_r($e->getMessage());
+        }
+    }
 }
 
 ?>

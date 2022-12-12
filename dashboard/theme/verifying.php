@@ -1,6 +1,6 @@
 <?php
 include '../../classes/Verification.php';
-if(!empty($_GET['url'])){
+if(!empty($_GET['email'])){
     $email = $_GET['email'];
     $url = $_GET['url'];
     $user = new Verification();
@@ -31,7 +31,7 @@ if(!empty($_GET['url'])){
 <body>
 
 <script>
-    window.setTimeout('window.location="http://localhost:3000/dashboard/theme/sign-up.php"; ',10000);
+    window.setTimeout('window.location="http://localhost:3000/coaching/dashboard/theme/sign-in.php"; ',10000);
 </script>
 </body>
 </html>

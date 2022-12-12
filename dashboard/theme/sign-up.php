@@ -1,56 +1,76 @@
 <?php
-include '../../classes/Client.php';
+
+
 $error = '';
 $msg = "";
-print_r($_SERVER['SERVER_PROTOCOL']);
-if(isset($_POST['sign'])){
-  $name = trim(htmlspecialchars($_POST['name']));
-  $first_name = trim(htmlspecialchars($_POST['first_name']));
-  $email = trim(htmlspecialchars($_POST['email']));
-  $password = htmlspecialchars($_POST['password']);
-  $Cpassword = htmlspecialchars($_POST['cpassword']);
-  if((!preg_match('/^([a-zA-Z]+)/',$name)) || (!preg_match('/^([a-zA-Z]+)/',$first_name)) || (!filter_var($email,FILTER_VALIDATE_EMAIL))){
-    $error .= 'Name first name or email does not respect the terms<br>';
+$add_user = null;
+//print_r($_SERVER['SERVER_PROTOCOL']);
+
+if(isset($_POST['sign']) || !empty($_GET['email'])){
+  if(isset($_POST['sign'])){
+    include_once '../../classes/Client.php';
+    
+  
+    $name = trim(htmlspecialchars($_POST['name']));
+    $first_name = trim(htmlspecialchars($_POST['first_name']));
+    $email = trim(htmlspecialchars($_POST['email']));
+    $password = htmlspecialchars($_POST['password']);
+    $Cpassword = htmlspecialchars($_POST['cpassword']);
+    if((!preg_match('/^([a-zA-Z]+)/',$name)) || (!preg_match('/^([a-zA-Z]+)/',$first_name)) || (!filter_var($email,FILTER_VALIDATE_EMAIL))){
+      $error .= 'Name first name or email does not respect the terms<br>';
+    }
+    if($password != $Cpassword){
+      $error .='The password and confirmation password must be the same<br>';
+    }
+    if($error === ''){
+      $url_validation = time().$email;
+      $url_validation = hash('sha1',$url_validation);
+      $password = hash('sha1',$password);
+      //echo $url_validation;
+      $user = new Client($name,$first_name,$email,$password,$url_validation);
+      $add_user=$user->add_client();
+    }
   }
-  if($password != $Cpassword){
-    $error .='The password and confirmation password must be the same<br>';
-  }
-  if($error === ''){
-    $url_validation = time().$email.rand(4 , 999);
+  if(!empty($_GET['email'])){
+    include_once '../../classes/Verification.php';
+    $email = $_GET['email'];
+    $url_validation = time().$email;
     $url_validation = hash('sha1',$url_validation);
-    $password = hash('sha1',$password);
-    echo $url_validation;
-    $user = new Client($name,$first_name,$email,$password,$url_validation);
-    $add_user=$user->add_client();
-    if($add_user === 1){
+    $new_url = new Verification();
+    $modify = $new_url->Re_transmitter_url_validation($email,$url_validation);
+    
+  }
+    if($add_user === 1 || !empty($_GET['email'])){
       
-      $path = $_SERVER['SERVER_PROTOCOL'] . "://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] ."/coaching/dashbord/theme/verifying.php";
-      $verification_link = "<a href='$path'?email=$email ,url=$url_validation>Your account verification link</a>";
+      
+      $path = 'http'."://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] ."/coaching/dashboard/theme/verifying.php?url=$url_validation"."&"." email=$email";
+      $verification_link = "<a href='$path'>Your account verification link</a>";
       $subject = "Your email verification.";
       $message = "
                         
-      Hello $name <br>
+      Hello  <br>
       Are you ready to gain access to all of the assets we prepared for coaching users?<br>
       First, you must complete your registration by clicking on the link below:<br><br>
       $verification_link
       <br><br>
       This link will verify your email address, and then you’ll officially be a part of our community.<br>
       See you there!<br><br>
-      <strong>Best regards, the <u>Welfare</u> team.</strong>
+      <strong>Best regards, the <u>Coaching</u> team.</strong>
       ";
       $headers = "From: simoboolz@gmail.com \r\n";
       $headers .= "MIME-Version: 1.0" . "\r\n";
       $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
-      mail($email, $subject, $message, $headers);
-
-
-      $msg = "Please check your email";
+      if (mail($email, $subject, $message, $headers)){
+        $msg = "Please check your email";
+      }else
+             $msg = "Please try again, an error occurred";
+      
     }elseif($add_user === 0){
       $msg ="There is an account with the same email";
     }
-  }
 }
+
 
 
 
@@ -89,6 +109,20 @@ if(isset($_POST['sign'])){
   </head>
 
   <body class="" id="body">
+  <?php
+                if($error != ''){
+
+                  echo '<div class="alert alert-danger"  role="alert">'.$error.'</div>';
+                }elseif($msg != ''){
+                  echo '<div class="alert alert-success" role="alert">'.$msg;
+                  if($add_user != 0 || !empty($modify)){
+
+                    echo '<br><a href="sign-up.php?email='.$email.'">Re-transmitter</a></div>';
+
+                  }else echo '</div>';
+                }
+
+              ?>
     <div class="container d-flex align-items-center justify-content-center vh-100">
       <div class="row justify-content-center">
         <div class="col-lg-6 col-md-10">
@@ -145,18 +179,12 @@ if(isset($_POST['sign'])){
                     <button type="submit" name="sign" class="btn btn-lg btn-primary btn-block mb-4">Sign Up</button>
 
                     <p>Already have an account?
-                      <a class="text-blue" href="sign-in.html">Sign in</a>
+                      <a class="text-blue" href="sign-in.php">Sign in</a>
                     </p>
                   </div>
-              <?php
-                if($error != ''){
-
-                  echo '<div class="alert alert-danger" role="alert">'.$error.'</div>';
-                }elseif($msg != ''){
-                  echo '<div class="alert alert-success" role="alert">'.$msg.'</div>';
-                }
 
                 </div>
+                
               </form>
             </div>
           </div>

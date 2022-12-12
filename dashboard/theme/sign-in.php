@@ -79,7 +79,7 @@
                     <button type="submit" class="btn btn-lg btn-primary btn-block mb-4">Sign In</button>
 
                     <p>Don't have an account yet ?
-                      <a class="text-blue" href="sign-up.html">Sign Up</a>
+                      <a class="text-blue" href="sign-up.php">Sign Up</a>
                     </p>
                   </div>
                 </div>
