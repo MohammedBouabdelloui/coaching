@@ -3,18 +3,18 @@ include 'Connection.php';
 class Client
 {
     private $url_address_client;
-    private $nom;
-    private $prenom;
+    private $name;
+    private $first_name;
     private $nationality;
     private $email;
     private $password_Client;
     private $url_validation;
     private $validation;
-    public function __construct($nom,$prenom,$email,$password,$url_validation,)
+    public function __construct($name,$first_name,$email,$password,$url_validation,)
     {
         $this->url_address_client = $this->get_random_string_max(99);
-        $this->nom = $nom;
-        $this->prenom = $prenom;
+        $this->name = $name;
+        $this->first_name = $first_name;
         $this->nationality =  $this->get_nationality(); ;
         $this->email = $email;
         $this->password_Client = $password;
@@ -69,12 +69,12 @@ class Client
                 try{
                     $con = new Connection();
                     $connection = $con->connection;
-                    $req = "INSERT INTO Client (url_address_client , nom , prenom , nation , email , password,validation,url_validation) values(?,?,?,?,?,?,?,?)";
+                    $req = "INSERT INTO Client (url_address_client , name , first_name , nationality , email , password,validation,url_validation) values(?,?,?,?,?,?,?,?)";
                     $statement = $connection->prepare($req);
                     
                     //$statement = $this->conn->prepare($sql);
                     
-                    $statement->execute([$this->url_address_client , $this->nom , $this->prenom , $this->nationality , $this->email ,$this->password_Client,$this->validation,$this->url_validation]);
+                    $statement->execute([$this->url_address_client , $this->name , $this->first_name , $this->nationality , $this->email ,$this->password_Client,$this->validation,$this->url_validation]);
                     return 1;
                 }catch(Exception $e){
                     print_r($e->getMessage());
