@@ -48,8 +48,12 @@ class Client
           }
         // create curl resource
         $ch =  (unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=105.157.12.77')));
-    
-        return $ch['geoplugin_countryName'];     
+        if($ch !=  ''){
+
+            return $ch['geoplugin_countryName'];     
+        }
+        else return "Earth";
+        
     }
 
     public function add_client(){

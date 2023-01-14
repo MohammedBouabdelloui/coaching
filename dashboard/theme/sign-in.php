@@ -9,7 +9,8 @@ if(isset($_POST['sign'])){
   
   if($entry === 1){
     
-    print $_SESSION['name'];
+    //print $_SESSION['name'];
+
   }
 
 }
@@ -95,7 +96,7 @@ if(isset($_POST['sign'])){
                         </label>
                       </div>
 
-                      <p><a class="text-blue" href="#">Forgot Your Password?</a></p>
+                      <p><a class="text-blue" href="Create_ne_ password.php">Forgot Your Password?</a></p>
                     </div>
 
                     <button type="submit" name='sign' class="btn btn-lg btn-primary btn-block mb-4">Sign In</button>

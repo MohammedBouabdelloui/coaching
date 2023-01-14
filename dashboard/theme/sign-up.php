@@ -1,6 +1,8 @@
 <?php
 
 
+
+//echo $nb + $nb2;
 $error = '';
 $msg = "";
 $add_user = null;
@@ -38,12 +40,13 @@ if(isset($_POST['sign']) || !empty($_GET['email'])){
     $url_validation = hash('sha1',$url_validation);
     $new_url = new Verification();
     $modify = $new_url->Re_transmitter_url_validation($email,$url_validation);
+    //$_GET['email'] = null;
     
   }
     if($add_user === 1 || !empty($_GET['email'])){
       
       
-      $path = 'http'."://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] ."/coaching/dashboard/theme/verifying.php?url=$url_validation"."&"." email=$email";
+      $path = "http"."://"  . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] ."/coaching/dashboard/theme/verifying.php?url=$url_validation"."&"." email=$email";
       $verification_link = "<a href='$path'>Your account verification link</a>";
       $subject = "Your email verification.";
       $message = "
@@ -69,6 +72,7 @@ if(isset($_POST['sign']) || !empty($_GET['email'])){
     }elseif($add_user === 0){
       $msg ="There is an account with the same email";
     }
+    //$_GET['email'] = 'null';
 }
 
 
