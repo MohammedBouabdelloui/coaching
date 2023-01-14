@@ -147,7 +147,9 @@ if(isset($_POST['sign_up']) || !empty($_GET['email'])){
                 }
 
               ?>
-              <span><?= $msg ?></span>
+              
+
+              
             	<input type="submit" name="sign_up" class="btn" value="Login">
             </form>
         </div>
